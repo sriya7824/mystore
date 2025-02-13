@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- <script src="index.js"></script> -->
+  </head>
+  
+  <body onload="showProducts()">
+    <script src="index.js"></script>
+    <div class="container">
+        <div class="header">
+    <!-- <script src="index.js"></script> -->
+    <h1>My Store</h1>
+    
+   <h4 onclick="displaycart()">Cart:<span id="cartcount"></span></h4>
+     <!-- <div id="cartcount"></div> -->
+      </div>
+      <div class="productBlock">
+    <div id="divProducts"></div>
+    </div>
+<div id="divCartBlock" class="cartBlock" style="display:block">
+    <h3>My Cart</h3>
+    <div id="divCart"></div>
+    <div id="divtotal"></div>
+    <button onclick="hidecart()">Close</button>
+    </div>
+</div>
+<hr>
+<h4>@Copyright 2025. All rights reserved.</h4>
+  </body>
+</html>
