@@ -27,20 +27,20 @@ const showTotal = () => {
 };
 
 const showOrders = () => {
-  let str = "";
+  let str = "<div style='padding:30px'><h3>My Orders</h1>";
   orders.map((value) => {
     if (value.customer === user.email) {
       str += `
-      <li>
+      <div>
       ${value.customer}-
       ${value.orderValue}-
-      ${Object.keys(items).length}-
-      ${value.status}-
-      </li>
+      ${Object.keys(value.items).length}-
+      ${value.status}
+      </div>
       `;
     }
   });
-  divProducts.innerHTML = str;
+  divProducts.innerHTML = str + "</div>"
 };
 
 const showMain = () => {
@@ -82,7 +82,9 @@ const placeOrder = () => {
   };
   orders.push(obj);
   cart = {};
-  showCart();
+  showCart()
+  hideCart()
+  showOrders();
   console.log(orders);
 };
 

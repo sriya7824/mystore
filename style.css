@@ -61,8 +61,11 @@
     margin: 10px;
     padding: 10px;
 }
-
+.menu{
+  margin:10px;
+}
 .menu li {
     display: inline-block;
     padding: 5px;
+    margin:10px;
 }
