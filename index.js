@@ -1,24 +1,26 @@
-const products = [
-    {
-      id: 1,
-      name: "Product 1",
-      desc: "Description of the product. Description of the product. ",
-      price: 25,
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      desc: "Description of the product. Description of the product. ",
-      price: 45,
-    },
-    {
-      id: 3,
-      name: "Product 3",
-      desc: "Description of the product. Description of the product. ",
-      price: 30,
-    },
-  ];
-  const cart = {};
+// const products = [
+//     {
+//       id: 1,
+//       name: "Product 1",
+//       desc: "Description of the product. Description of the product. ",
+//       price: 25,
+//     },
+//     {
+//       id: 2,
+//       name: "Product 2",
+//       desc: "Description of the product. Description of the product. ",
+//       price: 45,
+//     },
+//     {
+//       id: 3,
+//       name: "Product 3",
+//       desc: "Description of the product. Description of the product. ",
+//       price: 30,
+//     },
+//   ];
+let products=[];
+let orders=[];
+  let cart = {};
   let users = [];
   let user = {};
   const addToCart = (id) => {
@@ -36,19 +38,49 @@ const products = [
     showCart();
   };
   const showTotal = () => {
-    let total = products.reduce((sum, value) => {
+     total = products.reduce((sum, value) => {
       return sum + value.price * (cart[value.id] ? cart[value.id] : 0);
     }, 0);
   
     divTotal.innerHTML = `Order Value: $${total}`;
   };
   
+  const showOrders =() =>
+  {
+        // let str = " ";
+        // orders.forEach((order, index) => {
+        //     str += `<li>Order #${index + 1} - Customer: ${order.customer}, Total: $${order.orderValue}, Status: ${order.status}</li>`;
+        // });
+        // str += "</ul>";
+        
+        // document.getElementById("divProducts").innerHTML = str;
+        let str=" ";
+        orders.map((value)=>{
+            if(value.customer === user.email)
+            {
+                str+=`
+                <li>
+                ${value.customer}-
+                ${value.odervalue}-
+                ${Object.keys(items).length}-
+                ${value.status}
+                </li>`
+            }
+        })
+        divProducts.innerHTML=str;
+    };
+    
   const showMain = () => {
     let str = `
     <div class="container">
         <div class="header">
           <h1>My Store</h1>
-          <h4 onclick="displayCart()">Cart:<span id="items"></span></h4>
+          <div style='display:flex'>
+          <div onclick='showProducts()'>Home</div>
+          <div onclick='showOrders()'>Orders</div>
+          <div onclick="displayCart()">Cart:<span id="items"></span></div>
+          <div><button onclick='showLogin()'>Logout</button></div>
+          </div>
         </div>
         <div class="productBlock">
           <div id="divProducts"></div>
@@ -66,6 +98,19 @@ const products = [
     root.innerHTML = str;
     showProducts();
   };
+  const placeOrder=()=>{
+    const obj = {
+        customer: user.email,
+        items:cart,
+        odervalue:total,
+        status:"pending",
+    };
+
+    orders.push(obj);
+    cart={}
+    showCart()
+   console.log(orders);
+};
   
   const showCart = () => {
     let str = "";
@@ -77,6 +122,7 @@ const products = [
         })'>-</button>${cart[value.id]}<button onclick='increment(${
           value.id
         })'>+</button>-$${value.price * cart[value.id]}</li>
+        <button onclick='placeOrder()'>Place Order</button>
           `;
       }
     });
@@ -94,7 +140,7 @@ const products = [
   
   function showLogin() {
     let str = `
-    <div>
+    <div class='login'>
         <h2>Login Form</h2>
         <div id='msg'></div>
         <p><input id="email" type="text"></p>
@@ -107,7 +153,7 @@ const products = [
   }
   
   function showForm() {
-    let str = `
+    let str = `<div class='registration'>
     <h2>Registration Form</h2>
     <p><input type="text" id="name" placeholder="Name"></p>
     <p><input type="text" id="email" placeholder="Email"></p>
@@ -117,6 +163,7 @@ const products = [
     <p>Already a member?<button onclick='showLogin()'>Login Here</button></p>
     `;
     root.innerHTML = str;
+'</div>'
   }
   
   function chkUser() {
@@ -153,16 +200,18 @@ const products = [
   }
   
   const showProducts = () => {
-    let str = "<div class='row'>";
-    products.map((value) => {
-      str += `
-        <div class='box'>
-        <h3>${value.name}</h3>
-        <p>${value.desc}</p>
-        <h4>$${value.price}</h4>
-        <button onclick=addToCart(${value.id})>Add to Cart</button>
-        </div>
-        `;
-    });
-    divProducts.innerHTML = str + "</div>";
+    fetch("products.json").then(res=>res.json()).then((data)=>(products=data)).then(()=>{
+        let str = "<div class='row'>";
+        products.map((value) => {
+          str += `
+            <div class='box'>
+            <h3>${value.name}</h3>
+            <p>${value.desc}</p>
+            <h4>$${value.price}</h4>
+            <button onclick=addToCart(${value.id})>Add to Cart</button>
+            </div>
+            `;
+        });
+        divProducts.innerHTML = str + "</div>";
+      });
   };
